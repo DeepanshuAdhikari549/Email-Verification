@@ -2,97 +2,59 @@
 <html lang="en">
 <head>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-  <title>Email Verification Module</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <style>
+<title>Email Verification Module</title>
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+<style>
 
-    body{
-      font-family:Arial, sans-serif;
-      background:#081120;
-      color:white;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:20px;
-    }
+body{
+  font-family:Arial;
+  background:#081120;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
 
-    .container{
-      width:100%;
-      max-width:800px;
-      background:#111c2f;
-      border-radius:15px;
-      padding:40px;
-      box-shadow:0 0 20px rgba(0,0,0,0.4);
-    }
+.container{
+  width:700px;
+  background:#111c2f;
+  padding:40px;
+  border-radius:15px;
+}
 
-    h1{
-      text-align:center;
-      margin-bottom:10px;
-      font-size:42px;
-    }
+input{
+  width:100%;
+  padding:15px;
+  margin-top:20px;
+  border-radius:10px;
+  border:none;
+}
 
-    .subtitle{
-      text-align:center;
-      color:#aaa;
-      margin-bottom:30px;
-    }
+button{
+  margin-top:20px;
+  padding:15px 25px;
+  background:#3b82f6;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
 
-    input{
-      width:100%;
-      padding:15px;
-      border-radius:10px;
-      border:2px solid #3b82f6;
-      background:#0b1425;
-      color:white;
-      font-size:18px;
-      margin-bottom:20px;
-    }
+.result{
+  margin-top:20px;
+  background:#091325;
+  padding:20px;
+  border-radius:10px;
+  white-space:pre-wrap;
+}
 
-    button{
-      padding:15px 25px;
-      background:#3b82f6;
-      border:none;
-      color:white;
-      font-size:18px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:bold;
-    }
-
-    button:hover{
-      opacity:0.9;
-    }
-
-    .result{
-      margin-top:25px;
-      background:#091325;
-      padding:20px;
-      border-radius:10px;
-      overflow:auto;
-      white-space:pre-wrap;
-      font-size:15px;
-    }
-
-    .api{
-      margin-top:30px;
-      color:#bbb;
-    }
-
-    .api code{
-      color:#4ade80;
-    }
-
-  </style>
+</style>
 
 </head>
 
@@ -100,33 +62,24 @@
 
 <div class="container">
 
-  <h1>Email Verification Module</h1>
+<h1>Email Verification Module</h1>
 
-  <p class="subtitle">
-    Syntax validation · DNS MX lookup · SMTP RCPT TO · Typo detection
-  </p>
+<input
+type="text"
+id="email"
+placeholder="Enter email">
 
-  <input
-    type="text"
-    id="email"
-    placeholder="Enter email address"
-  >
+<button onclick="verifyEmail()">
 
-  <button onclick="verifyEmail()">
-    Verify Email
-  </button>
+Verify Email
 
-  <div class="result" id="result">
+</button>
 
-Result will appear here...
+<div class="result" id="result">
 
-  </div>
+Result appears here...
 
-  <div class="api">
-
-    <p><code>GET /api/verify?email=test@gmail.com</code></p>
-
-  </div>
+</div>
 
 </div>
 
@@ -140,23 +93,17 @@ async function verifyEmail(){
   const resultBox =
     document.getElementById('result');
 
-  if(!email){
-
-    resultBox.innerHTML =
-      "Please enter an email address";
-
-    return;
-  }
-
-  resultBox.innerHTML = "Checking email...";
+  resultBox.innerHTML = "Checking...";
 
   try{
 
-    const response = await fetch(
+    const response =
+      await fetch(
       `/api/verify?email=${email}`
     );
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
     resultBox.innerHTML =
       JSON.stringify(data, null, 2);
@@ -164,7 +111,7 @@ async function verifyEmail(){
   }catch(error){
 
     resultBox.innerHTML =
-      "Error: " + error.message;
+      error.message;
 
   }
 
