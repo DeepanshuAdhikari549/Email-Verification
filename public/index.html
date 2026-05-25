@@ -1,148 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Email Verification API</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Email Verification Module</title>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      min-height: 100vh;
-      color: #e2e8f0;
-      padding: 2rem 1rem;
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
-    .container { max-width: 720px; margin: 0 auto; }
-    h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-    .subtitle { color: #94a3b8; margin-bottom: 2rem; font-size: 0.95rem; }
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#081120;
+      color:white;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
     }
-    label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.5rem; }
-    input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #475569;
-      border-radius: 8px;
-      background: #0f172a;
-      color: #f1f5f9;
-      font-size: 1rem;
-      margin-bottom: 1rem;
+
+    .container{
+      width:100%;
+      max-width:800px;
+      background:#111c2f;
+      border-radius:15px;
+      padding:40px;
+      box-shadow:0 0 20px rgba(0,0,0,0.4);
     }
-    input:focus { outline: 2px solid #3b82f6; border-color: transparent; }
-    button {
-      background: #3b82f6;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      font-weight: 600;
+
+    h1{
+      text-align:center;
+      margin-bottom:10px;
+      font-size:42px;
     }
-    button:hover { background: #2563eb; }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
+
+    .subtitle{
+      text-align:center;
+      color:#aaa;
+      margin-bottom:30px;
     }
-    .badge.valid { background: #166534; color: #86efac; }
-    .badge.invalid { background: #991b1b; color: #fca5a5; }
-    .badge.unknown { background: #854d0e; color: #fde047; }
-    .suggestion {
-      background: #422006;
-      border: 1px solid #b45309;
-      color: #fdba74;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
+
+    input{
+      width:100%;
+      padding:15px;
+      border-radius:10px;
+      border:2px solid #3b82f6;
+      background:#0b1425;
+      color:white;
+      font-size:18px;
+      margin-bottom:20px;
     }
-    pre {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 1rem;
-      overflow-x: auto;
-      font-size: 0.8rem;
-      line-height: 1.5;
-      color: #a5f3fc;
+
+    button{
+      padding:15px 25px;
+      background:#3b82f6;
+      border:none;
+      color:white;
+      font-size:18px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
     }
-    .endpoints { font-size: 0.85rem; color: #94a3b8; line-height: 1.8; }
-    .endpoints code { background: #0f172a; padding: 0.15rem 0.4rem; border-radius: 4px; color: #7dd3fc; }
-    .loading { color: #94a3b8; font-style: italic; }
+
+    button:hover{
+      opacity:0.9;
+    }
+
+    .result{
+      margin-top:25px;
+      background:#091325;
+      padding:20px;
+      border-radius:10px;
+      overflow:auto;
+      white-space:pre-wrap;
+      font-size:15px;
+    }
+
+    .api{
+      margin-top:30px;
+      color:#bbb;
+    }
+
+    .api code{
+      color:#4ade80;
+    }
+
   </style>
+
 </head>
+
 <body>
-  <div class="container">
-    <h1>Email Verification Module</h1>
-    <p class="subtitle">Syntax validation · DNS MX lookup · SMTP RCPT TO · Typo detection</p>
 
-    <div class="card">
-      <label for="email">Email address</label>
-      <input type="email" id="email" placeholder="user@example.com" value="user@gmial.com" />
-      <button id="verifyBtn">Verify Email</button>
-      <p id="status" class="loading" style="margin-top:1rem;display:none;"></p>
-      <div id="result" style="margin-top:1rem;"></div>
-    </div>
+<div class="container">
 
-    <div class="card">
-      <h3 style="margin-bottom:0.75rem;font-size:1rem;">API Endpoints</h3>
-      <div class="endpoints">
-        <div><code>GET /api/verify?email=...</code> — Full verification</div>
-        <div><code>GET /api/did-you-mean?email=...</code> — Typo suggestion only</div>
-        <div><code>GET /api/health</code> — Health check</div>
-      </div>
-    </div>
+  <h1>Email Verification Module</h1>
+
+  <p class="subtitle">
+    Syntax validation · DNS MX lookup · SMTP RCPT TO · Typo detection
+  </p>
+
+  <input
+    type="text"
+    id="email"
+    placeholder="Enter email address"
+  >
+
+  <button onclick="verifyEmail()">
+    Verify Email
+  </button>
+
+  <div class="result" id="result">
+
+Result will appear here...
+
   </div>
 
-  <script>
-    const emailInput = document.getElementById('email');
-    const verifyBtn = document.getElementById('verifyBtn');
-    const statusEl = document.getElementById('status');
-    const resultEl = document.getElementById('result');
+  <div class="api">
 
-    async function verify() {
-      const email = emailInput.value.trim();
-      if (!email) return alert('Enter an email address');
+    <p><code>GET /api/verify?email=test@gmail.com</code></p>
 
-      verifyBtn.disabled = true;
-      statusEl.style.display = 'block';
-      statusEl.textContent = 'Verifying...';
-      resultEl.innerHTML = '';
+  </div>
 
-      try {
-        const res = await fetch(`/api/verify?email=${encodeURIComponent(email)}`);
-        const data = await res.json();
+</div>
 
-        statusEl.style.display = 'none';
-        let html = `<span class="badge ${data.result}">${data.result}</span>`;
+<script>
 
-        if (data.didyoumean) {
-          html += `<div class="suggestion">Did you mean: <strong>${data.didyoumean}</strong>?</div>`;
-        }
+async function verifyEmail(){
 
-        html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-        resultEl.innerHTML = html;
-      } catch (err) {
-        statusEl.textContent = 'Error: ' + err.message;
-      } finally {
-        verifyBtn.disabled = false;
-      }
-    }
+  const email =
+    document.getElementById('email').value;
 
-    verifyBtn.addEventListener('click', verify);
-    emailInput.addEventListener('keydown', (e) => e.key === 'Enter' && verify());
-  </script>
+  const resultBox =
+    document.getElementById('result');
+
+  if(!email){
+
+    resultBox.innerHTML =
+      "Please enter an email address";
+
+    return;
+  }
+
+  resultBox.innerHTML = "Checking email...";
+
+  try{
+
+    const response = await fetch(
+      `/api/verify?email=${email}`
+    );
+
+    const data = await response.json();
+
+    resultBox.innerHTML =
+      JSON.stringify(data, null, 2);
+
+  }catch(error){
+
+    resultBox.innerHTML =
+      "Error: " + error.message;
+
+  }
+
+}
+
+</script>
+
 </body>
 </html>
