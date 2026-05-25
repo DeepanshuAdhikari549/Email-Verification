@@ -2,13 +2,16 @@
 
 const express = require('express');
 
-const { verifyEmail } = require('./verifyEmail');
-const { getDidYouMean } = require('./didYouMean');
-const { levenshteinDistance } = require('./levenshtein');
-const { validateEmailSyntax } = require('./validators');
-const { lookupMxRecords } = require('./dns');
-const { verifyMailboxSmtp, mapSmtpResponse } = require('./smtp');
-const constants = require('./constants');
+const {
+  verifyEmail,
+  getDidYouMean,
+  levenshteinDistance,
+  validateEmailSyntax,
+  lookupMxRecords,
+  verifyMailboxSmtp,
+  mapSmtpResponse,
+  ...constants
+} = require('./index');
 
 const app = express();
 
@@ -18,15 +21,16 @@ app.get('/', (req, res) => {
   res.send('Email Verification API Running');
 });
 
-app.post('/verify-email', async (req, res) => {
+app.get('/api/verify', async (req, res) => {
+
   try {
 
-    const { email } = req.body;
+    const email = req.query.email;
 
     if (!email) {
       return res.status(400).json({
         result: 'invalid',
-        error: 'Email is required'
+        error: 'Email query parameter is required'
       });
     }
 
@@ -42,6 +46,7 @@ app.post('/verify-email', async (req, res) => {
     });
 
   }
+
 });
 
 const PORT = process.env.PORT || 3000;
@@ -49,14 +54,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-module.exports = {
-  verifyEmail,
-  getDidYouMean,
-  levenshteinDistance,
-  validateEmailSyntax,
-  lookupMxRecords,
-  verifyMailboxSmtp,
-  mapSmtpResponse,
-  ...constants,
-};
