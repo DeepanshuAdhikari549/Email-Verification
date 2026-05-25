@@ -2,6 +2,7 @@
 
 A Node.js module that verifies email addresses using syntax validation, DNS MX lookup, and SMTP `RCPT TO` checks — with typo detection via Levenshtein distance.
 
+## Live Link: https://email-verification-f2f1.onrender.com
 ## Features
 
 - **Syntax validation** — RFC-style format checks (single `@`, no `..`, length limits)
