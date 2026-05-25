@@ -1,0 +1,25 @@
+{
+  "name": "email-verification-module",
+  "version": "1.0.0",
+  "description": "Node.js email verification module using SMTP with typo detection",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "verify": "node examples/verify.js",
+    "start": "npx vercel dev",
+    "build": "npm test"
+  },
+  "keywords": [
+    "email",
+    "verification",
+    "smtp",
+    "mx"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
