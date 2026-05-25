@@ -5,9 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest --coverage",
-    "verify": "node examples/verify.js",
-    "build": "npm test"
+    "test": "jest --coverage"
   },
   "keywords": [
     "email",
