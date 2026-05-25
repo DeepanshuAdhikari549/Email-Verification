@@ -2,6 +2,8 @@
 
 const express = require('express');
 
+const { verifyEmail } = require('./verifyEmail');
+
 const app = express();
 
 app.use(express.json());
@@ -23,19 +25,7 @@ app.get('/api/verify', async (req, res) => {
 
     }
 
-    const result = {
-      email,
-      result: 'valid',
-      resultcode: 1,
-      subresult: 'mailbox_exists',
-      domain: email.split('@')[1],
-      mxRecords: [
-        'gmail-smtp-in.l.google.com'
-      ],
-      executiontime: 2,
-      error: null,
-      timestamp: new Date().toISOString()
-    };
+    const result = await verifyEmail(email);
 
     res.json(result);
 
